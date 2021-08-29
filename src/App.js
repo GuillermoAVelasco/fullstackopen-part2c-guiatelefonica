@@ -9,7 +9,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ filterName, setFilterName ] = useState('')
-
+  const [ personsFind, setPersonsFind ]=useState([]); 
   useEffect(() => {
     console.log('effect')
     axios
@@ -17,11 +17,11 @@ const App = () => {
       .then(response => {
         console.log('promise fulfilled')
         setPersons(response.data)
+        setPersonsFind(persons);
       })
   }, [])
   console.log('render', persons.length, 'persons')
-
-
+  
   const setNewNameTel=(e)=>{
     setNewName(e.target.value)
   }
@@ -59,9 +59,16 @@ const App = () => {
     setNewNumberTel(e)
   }
 
-  const personsFind = filterName===''
-  ? persons
-  : persons.filter(person => person.name.toUpperCase().indexOf(filterName.toUpperCase()) !== -1)
+  useEffect(()=>{
+    console.log('busqueda')
+    setPersonsFind(filterName===''
+    ? persons
+    : persons.filter(person => person.name.toUpperCase().indexOf(filterName.toUpperCase()) !== -1))
+    console.log('filter',personsFind)
+  },[filterName])
+
+
+ 
 //console.log(personsFind)
   return (
     <div>
